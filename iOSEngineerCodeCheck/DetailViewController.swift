@@ -16,9 +16,9 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
 
         let list = listViewController.repositoryList[listViewController.index]
-        stargazersLabel.text = "Written in \(list["language"] as? String ?? "")"
+        languageLabel.text = "Written in \(list["language"] as? String ?? "")"
         stargazersLabel.text = "\(list["stargazers_count"] as? Int ?? 0) stars"
-        wachersLabel.text = "\(list["wachers_count"] as? Int ?? 0) watchers"
+        wachersLabel.text = "\(list["watchers_count"] as? Int ?? 0) watchers"
         forksLabel.text = "\(list["forks_count"] as? Int ?? 0) forks"
         issuesLabel.text = "\(list["open_issues_count"] as? Int ?? 0) open issues"
         getImage()

@@ -5,7 +5,6 @@ class ListViewController: UITableViewController, UISearchBarDelegate {
     @IBOutlet private weak var repositorySearchBar: UISearchBar!
     
     var repositoryList: [[String: Any]] = []
-    
     var task: URLSessionTask?
     var word: String!
     var index: Int!
@@ -64,21 +63,18 @@ class ListViewController: UITableViewController, UISearchBarDelegate {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let cell = UITableViewCell()
         let rp = repositoryList[indexPath.row]
         cell.textLabel?.text = rp["full_name"] as? String ?? ""
         cell.detailTextLabel?.text = rp["language"] as? String ?? ""
         cell.tag = indexPath.row
         return cell
-        
     }
-    
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // 画面遷移時に呼ばれる
         index = indexPath.row
         performSegue(withIdentifier: "Detail", sender: self)
-        
     }
     
 }
