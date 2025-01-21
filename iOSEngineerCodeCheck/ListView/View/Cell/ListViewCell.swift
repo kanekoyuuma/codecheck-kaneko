@@ -5,7 +5,6 @@ final class ListViewCell: UITableViewCell {
     
     let contents: UIView = {
         let view = UIView()
-        view.backgroundColor = .red
         view.layer.cornerRadius = 30
         view.translatesAutoresizingMaskIntoConstraints = false
         return view

@@ -19,13 +19,46 @@ struct ListViewCellEntity {
 }
 
 final class ListViewPresenter {
+    var repositoryList: [Repository.Item] = []
+    
+    private weak var view: ListViewInput?
+    // 依存
     private var dependencies: ListViewPresenterDependencies
     
-    init(dependencies: ListViewPresenterDependencies = (
-        router: ListViewRouter(),
-        interactor: ListViewInteractor()
-    )) {
-        self.dependencies = dependencies
+    init(view: ListViewInput,
+        dependencies: ListViewPresenterDependencies = (
+            router: ListViewRouter(),
+            interactor: ListViewInteractor()
+        )) {
+            self.view = view
+            self.dependencies = dependencies
+        }
+    
+}
+
+extension ListViewPresenter: ListViewDelegate {
+    
+    func onTapSearch(_ value: String) {
+        dependencies.interactor.getRepositories(value) { [weak self] value in
+            self?.repositoryList = value
+            self?.view?.reload()
+        }
     }
     
+    func onTapCancel() {
+        dependencies.interactor.taskCancel()
+    }
+    
+    func onTapCell(_ selectIndex: Int) {
+        
+    }
+    
+    func getRepositoryList() -> [ListViewCellEntity] {
+        self.repositoryList.compactMap {
+            ListViewCellEntity(
+                name: $0.name ?? "",
+                language: $0.language ?? ""
+            )
+        }
+    }
 }

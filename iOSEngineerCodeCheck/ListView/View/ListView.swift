@@ -62,7 +62,7 @@ class ListView: UIView {
                 repositorySearchBar.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
                 repositorySearchBar.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
 
-                repositoryTable.topAnchor.constraint(equalTo: repositorySearchBar.bottomAnchor, constant: 400),
+                repositoryTable.topAnchor.constraint(equalTo: repositorySearchBar.bottomAnchor, constant: 0),
                 repositoryTable.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -50),
                 repositoryTable.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
                 repositoryTable.widthAnchor.constraint(equalTo: contentView.widthAnchor),

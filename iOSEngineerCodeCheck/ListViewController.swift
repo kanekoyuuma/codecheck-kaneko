@@ -1,13 +1,21 @@
 import UIKit
 
-class ListViewController: UIViewController {
-    
-    static let identifyCell = "ListViewCell"
+protocol ListViewDelegate: AnyObject {
+    func onTapSearch(_ value: String)
+    func onTapCancel()
+    func onTapCell(_ selectIndex: Int)
+    func getRepositoryList() -> [ListViewCellEntity]
+}
 
-//    @IBOutlet private weak var repositorySearchBar: UISearchBar!
+protocol ListViewInput: AnyObject {
+    func reload()
+}
+
+final class ListViewController: UIViewController {
+    static let identifyCell = "ListViewCell"
     
+    var delegate: ListViewDelegate?
     var repositoryList: [[String: Any]] = []
-    var task: URLSessionTask?
     var word: String!
     var index: Int!
     var listView: ListView!
@@ -20,59 +28,53 @@ class ListViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
         listView = self.view as? ListView
         
         listView.repositorySearchBar.delegate = self
         listView.repositoryTable.delegate = self
         listView.repositoryTable.dataSource = self
-        
-        
-//        repositorySearchBar.text = "GitHubのリポジトリを検索できるよー"
-//        repositorySearchBar.delegate = self
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        if segue.identifier == "Detail"{
-            let viewController = segue.destination as! DetailViewController
-            viewController.listViewController = self
-        }
-        
     }
 }
 
 extension ListViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return repositoryList.count
+        guard let count = delegate?.getRepositoryList().count else { return 0 }
+        return count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
-        let rp = repositoryList[indexPath.row]
-        cell.textLabel?.text = rp["full_name"] as? String ?? ""
-        cell.detailTextLabel?.text = rp["language"] as? String ?? ""
-        cell.tag = indexPath.row
+        guard let cell = listView.repositoryTable.dequeueReusableCell(
+            withIdentifier: ListViewController.identifyCell
+        ) as? ListViewCell else {
+            return UITableViewCell()
+        }
+        
+        let repository = delegate?.getRepositoryList()[indexPath.row]
+        
+        cell.setData(ListViewCellEntity(
+            name: repository?.name ?? "",
+            language: repository?.language ?? ""
+        ))
+                
         return cell
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // 画面遷移時に呼ばれる
-        index = indexPath.row
-        performSegue(withIdentifier: "Detail", sender: self)
+        // セルのタップ処理
+        delegate?.onTapCell(indexPath.row)
     }
 }
 
 extension ListViewController: UISearchBarDelegate {
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
-        // ↓こうすれば初期のテキストを消せる
+        // 初期化
         searchBar.text = ""
         return true
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        task?.cancel()
+        delegate?.onTapCancel()
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -80,20 +82,15 @@ extension ListViewController: UISearchBarDelegate {
         word = searchBar.text!
         
         if word.count != 0 {
-            let url = "https://api.github.com/search/repositories?q=\(word!)"
-            task = URLSession.shared.dataTask(with: URL(string: url)!) { (data, res, err) in
-                if let obj = try! JSONSerialization.jsonObject(with: data!) as? [String: Any] {
-                    if let items = obj["items"] as? [[String: Any]] {
-                    self.repositoryList = items
-                        DispatchQueue.main.async {
-                            self.listView.repositoryTable.reloadData()
-                        }
-                    }
-                }
-            }
-        // これ呼ばなきゃリストが更新されません
-        task?.resume()
+            delegate?.onTapSearch(word)
         }
-        
+    }
+}
+
+extension ListViewController: ListViewInput {
+    func reload() {
+        DispatchQueue.main.async {
+            self.listView.repositoryTable.reloadData()
+        }
     }
 }
