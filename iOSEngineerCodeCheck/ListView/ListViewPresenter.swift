@@ -5,11 +5,7 @@ typealias ListViewPresenterDependencies = (
     interactor: ListViewInteractorProtocol
 )
 
-struct ListViewCellEntity {
-    let name: String
-    let language: String
-}
-
+// MARK: Public
 final class ListViewPresenter {
     var repositoryList: [RepositoryEntity.Item] = []
     var transition: UIViewController?
@@ -31,6 +27,7 @@ final class ListViewPresenter {
     
 }
 
+// MARK: ListViewDelegate
 extension ListViewPresenter: ListViewDelegate {
     
     func onTapSearch(_ value: String) {
