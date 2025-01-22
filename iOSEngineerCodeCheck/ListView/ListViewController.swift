@@ -19,13 +19,13 @@ final class ListViewController: UIViewController {
     var word: String!
     var index: Int!
     var listView: ListView!
-        
+    
     override func loadView() {
         super.loadView()
         self.view = ListView(frame: .zero)
         self.view.backgroundColor = .white
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         listView = self.view as? ListView
@@ -56,13 +56,14 @@ extension ListViewController: UITableViewDelegate, UITableViewDataSource {
             name: repository?.name ?? "",
             language: repository?.language ?? ""
         ))
-                
+        
         return cell
     }
-
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // セルのタップ処理
         delegate?.onTapCell(indexPath.row)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 
@@ -79,18 +80,15 @@ extension ListViewController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         
-        word = searchBar.text!
-        
-        if word.count != 0 {
-            delegate?.onTapSearch(word)
-        }
+        guard let word = searchBar.text, word.count != 0 else { return }
+        delegate?.onTapSearch(word)
     }
 }
 
 extension ListViewController: ListViewInput {
     func reload() {
-        DispatchQueue.main.async {
-            self.listView.repositoryTable.reloadData()
+        DispatchQueue.main.async { [weak self] in
+            self?.listView.repositoryTable.reloadData()
         }
     }
 }

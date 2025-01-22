@@ -1,6 +1,6 @@
 import UIKit
 
-class DetailView: UIView {
+final class DetailView: UIView {
     
     private lazy var contentView: UIView = {
         let view = UIView()
@@ -17,6 +17,7 @@ class DetailView: UIView {
     
     let titleLabel: UILabel = {
         let label = UILabel()
+        label.font = .systemFont(ofSize: 25)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -92,6 +93,14 @@ class DetailView: UIView {
         issuesLabel.text = "\(value.openIssuesCount) open issues"
     }
     
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+}
+
+// Private
+extension DetailView {
     private func setComponent(){
         addSubview(contentView)
         [avatarImageView, titleLabel, parentStackView].forEach{
@@ -109,34 +118,29 @@ class DetailView: UIView {
     
     //オートレイアウトの設定
     private func setConstraint(){
-            NSLayoutConstraint.activate([
-                contentView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
-                contentView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor),
-                contentView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
-                contentView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor)
-            ])
-        }
-
-        private func setChildrenConstraint(){
-            NSLayoutConstraint.activate([
-                avatarImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
-                avatarImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-                avatarImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
-
-                titleLabel.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: 0),
-                titleLabel.leadingAnchor.constraint(equalTo: avatarImageView.leadingAnchor),
-                titleLabel.trailingAnchor.constraint(equalTo: avatarImageView.trailingAnchor),
-                
-                parentStackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 0),
-                parentStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -50),
-                parentStackView.leadingAnchor.constraint(equalTo: avatarImageView.leadingAnchor),
-                parentStackView.trailingAnchor.constraint(equalTo: avatarImageView.trailingAnchor)
-            ])
-        }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        NSLayoutConstraint.activate([
+            contentView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
+            contentView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor),
+            contentView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor)
+        ])
     }
     
+    private func setChildrenConstraint(){
+        NSLayoutConstraint.activate([
+            avatarImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
+            avatarImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            avatarImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            
+            titleLabel.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: 0),
+            titleLabel.leadingAnchor.constraint(equalTo: avatarImageView.leadingAnchor),
+            titleLabel.trailingAnchor.constraint(equalTo: avatarImageView.trailingAnchor),
+            
+            parentStackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 0),
+            parentStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -50),
+            parentStackView.leadingAnchor.constraint(equalTo: avatarImageView.leadingAnchor),
+            parentStackView.trailingAnchor.constraint(equalTo: avatarImageView.trailingAnchor)
+        ])
+    }
 }
 

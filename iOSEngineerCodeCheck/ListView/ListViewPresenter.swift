@@ -51,8 +51,8 @@ extension ListViewPresenter: ListViewDelegate {
     func getRepositoryList() -> [ListViewCellEntity] {
         self.repositoryList.compactMap {
             ListViewCellEntity(
-                name: $0.name ?? "",
-                language: $0.language ?? ""
+                name: $0.name ?? "-",
+                language: $0.language ?? "-"
             )
         }
     }

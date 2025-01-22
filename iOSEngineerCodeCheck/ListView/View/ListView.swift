@@ -1,21 +1,21 @@
 import UIKit
 
-class ListView: UIView {
-    private lazy var contentView: UIView = {
+final class ListView: UIView {
+    let contentView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
 
-    lazy var repositorySearchBar: UISearchBar = {
+    let repositorySearchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.translatesAutoresizingMaskIntoConstraints = false
-        searchBar.text = "GitHubのリポジトリを検索できるよー"
+        searchBar.text = "GitHubのリポジトリを検索"
         return searchBar
     }()
 
-    var repositoryTable: UITableView = {
+    lazy var repositoryTable: UITableView = {
         let table = UITableView()
         table.register(ListViewCell.self, forCellReuseIdentifier: ListViewController.identifyCell)
         table.rowHeight = 80
@@ -24,7 +24,6 @@ class ListView: UIView {
         table.translatesAutoresizingMaskIntoConstraints = false
         return table
     }()
-    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
