@@ -1,12 +1,4 @@
-//
-//  ListViewPresenter.swift
-//  iOSEngineerCodeCheck
-//
-//  Created by 金子侑真 on 2025/01/21.
-//  Copyright © 2025 YUMEMI Inc. All rights reserved.
-//
-
-import Foundation
+import UIKit
 
 typealias ListViewPresenterDependencies = (
     router: ListViewRouterProtocol,
@@ -19,20 +11,23 @@ struct ListViewCellEntity {
 }
 
 final class ListViewPresenter {
-    var repositoryList: [Repository.Item] = []
+    var repositoryList: [RepositoryEntity.Item] = []
+    var transition: UIViewController?
     
     private weak var view: ListViewInput?
     // 依存
     private var dependencies: ListViewPresenterDependencies
     
     init(view: ListViewInput,
-        dependencies: ListViewPresenterDependencies = (
+         transition: UIViewController,
+         dependencies: ListViewPresenterDependencies = (
             router: ListViewRouter(),
             interactor: ListViewInteractor()
-        )) {
-            self.view = view
-            self.dependencies = dependencies
-        }
+         )) {
+             self.view = view
+             self.transition = transition
+             self.dependencies = dependencies
+         }
     
 }
 
@@ -50,7 +45,10 @@ extension ListViewPresenter: ListViewDelegate {
     }
     
     func onTapCell(_ selectIndex: Int) {
+        guard let transition else { return }
         
+        let selectCellItem = repositoryList[selectIndex]
+        dependencies.router.presentDetailView(from: transition, entity: selectCellItem)
     }
     
     func getRepositoryList() -> [ListViewCellEntity] {

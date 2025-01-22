@@ -1,19 +1,12 @@
 import UIKit
 
 protocol ListViewRouterProtocol {
-    func present(from: UIViewController)
+    func presentDetailView(from: UIViewController, entity: RepositoryEntity.Item)
 }
 
 // MARK: Public
 final class ListViewRouter: ListViewRouterProtocol {
-    func present(from: UIViewController) {
-        
-    }
-}
-
-// MARK: Private
-extension ListViewRouter {
-    func create() {
-        let view = ListViewController()
+    func presentDetailView(from: UIViewController, entity: RepositoryEntity.Item) {
+        DetailViewRouter().present(from: from, entity: entity)
     }
 }
