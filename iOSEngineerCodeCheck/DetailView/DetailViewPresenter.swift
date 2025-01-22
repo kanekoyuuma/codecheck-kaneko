@@ -28,8 +28,8 @@ extension DetailViewPresenter: DetailViewDelegate {
     func onDidLoad() {
         guard let entity else { return }
         let value = DetailViewEntity(
-            name: entity.name ?? "",
-            language: entity.language ?? "",
+            name: entity.name ?? "-",
+            language: entity.language ?? "-",
             stargazersCount: entity.stargazersCount ?? 0,
             watchersCount: entity.watchersCount ?? 0,
             forksCount: entity.forksCount ?? 0,
