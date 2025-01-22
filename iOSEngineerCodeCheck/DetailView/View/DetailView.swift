@@ -64,6 +64,9 @@ class DetailView: UIView {
     let itemStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
+        stackView.alignment = .top
+        stackView.distribution = .equalSpacing
+        stackView.spacing = 5
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -118,16 +121,16 @@ class DetailView: UIView {
             NSLayoutConstraint.activate([
                 avatarImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
                 avatarImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-                avatarImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 20),
+                avatarImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
 
                 titleLabel.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: 0),
-                titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-                titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 20),
+                titleLabel.leadingAnchor.constraint(equalTo: avatarImageView.leadingAnchor),
+                titleLabel.trailingAnchor.constraint(equalTo: avatarImageView.trailingAnchor),
                 
                 parentStackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 0),
                 parentStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -50),
-                parentStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-                parentStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20)
+                parentStackView.leadingAnchor.constraint(equalTo: avatarImageView.leadingAnchor),
+                parentStackView.trailingAnchor.constraint(equalTo: avatarImageView.trailingAnchor)
             ])
         }
     
